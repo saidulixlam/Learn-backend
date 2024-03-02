@@ -1,21 +1,33 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use((req,res,next)=>{
-  console.log('First middle ware');
-  next();
-})
 
-app.use((req,res,next)=>{
-  console.log('Second middle ware');
-  next();
+app.use(bodyParser.urlencoded({ extended: false }));
 
-})
+app.get('/add-product', (req, res) => {
+  res.send(`
+        <form action="/add-product" method="post">
+            <label for="product">Product Name:</label>
+            <input type="text" id="product" name="product">
+            <br>
+            <label for="size">Product Size:</label>
+            <input type="text" id="size" name="size">
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+    `);
+});
 
-app.use((req,res)=>{
-  res.send('Now printing')
-})
+app.post('/add-product', (req, res) => {
+  const productName = req.body.product;
+  const productSize = req.body.size;
+  console.log('Product Name:', productName);
+  console.log('Product Size:', productSize);
+  // res.send('Product added successfully!');
+  res.send(productName+ ' '+productSize);
+});
 
 app.listen(3000);
 
