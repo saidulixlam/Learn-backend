@@ -19,15 +19,13 @@ app.use(admin);
 app.use(shop);
 app.use(contact);
 
-app.use('/success', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'success.html'));
-});
+const errorController = require('./controllers/errorController');
+const successController = require('./controllers/successController')
+app.use('/success',successController.success );
 
-app.use((req,res,next)=>{
-  res.status(404).sendFile(path.join(__dirname,'views','404.html'));
-}); 
+app.use(errorController.get404); 
 
 
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log('Server is running on port 3000');
 });
